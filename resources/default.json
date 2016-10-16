@@ -1,0 +1,8 @@
+{
+  "status": {
+    "inactive": 0,
+    "active": 1,
+    "disabled": 2,
+    "deleted": 3
+  }
+}
