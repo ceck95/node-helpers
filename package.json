@@ -1,12 +1,12 @@
 {
-  "name": "nexx-helpers",
+  "name": "node-helpers",
   "version": "0.1.2",
-  "description": "Nexx node server helper functions",
+  "description": "Node server helper functions",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "toan.nguyen",
+  "author": "nhutdev",
   "license": "ISC",
   "dependencies": {
     "bluebird": "^3.4.1",
