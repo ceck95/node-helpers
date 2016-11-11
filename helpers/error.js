@@ -1,8 +1,8 @@
 /*
  * @Author: toan.nguyen
  * @Date:   2016-04-21 05:52:29
- * @Last Modified by:   toan.nguyen
- * @Last Modified time: 2016-10-02 16:43:45
+* @Last modified by:   nhutdev
+* @Last modified time: 2016-11-11T14:27:01+07:00
  */
 
 'use strict';
@@ -78,7 +78,7 @@ class ErrorHelper {
 
     // imports extra paths
     if (paths) {
-      paths.forEach(function (path) {
+      paths.forEach(function(path) {
         var defaultPath = opts.basePath ? (opts.basePath + '/' + path) : path,
           localePath = opts.basePath ? (opts.basePath + '/' + path + locale) : (path + locale),
           dict = require(localePath),
@@ -107,7 +107,7 @@ class ErrorHelper {
 
     if (Array.isArray(err)) {
       sCode = err[0].code || ERROR_CODE.INTERNAL;
-    } else if (typeof (err) === 'object') {
+    } else if (typeof(err) === 'object') {
       if (err.errors) {
         sCode = err.errors[0].code || ERROR_CODE.INTERNAL;
       } else if (err.code) {
@@ -115,7 +115,7 @@ class ErrorHelper {
       }
     }
 
-    if (typeof (sCode) !== 'string') {
+    if (typeof(sCode) !== 'string') {
       sCode = sCode.toString();
     }
 
@@ -198,7 +198,7 @@ class ErrorHelper {
       return {
         errors: errs
       };
-    } else if (typeof (errs) === 'string') {
+    } else if (typeof(errs) === 'string') {
       return {
         errors: [
           self.unknownError({
@@ -206,26 +206,20 @@ class ErrorHelper {
           })
         ]
       };
-    } else if (typeof (errs) === 'object') {
+    } else if (typeof(errs) === 'object') {
       if (errs.isJoi) {
         return this.fromJoi(errs);
       } else if (errs.code) {
-        let message = errs.message || this.getMessage(errs.code) || errs.toString();
-        let error = {
-          code: errs.code,
-          message: message,
-          uiMessage: errs.uiMessage || this.getUiMessage(errs.code) || message,
-          source: errs.source
-        };
+        let error = this.createErrorObject(errs.code, errs);
         return {
           errors: [error]
         };
       } else if (errs.errors) {
         switch (errs.name) {
-        case 'nexx.exceptions.DBExceptions':
-          return self.fromDBExceptions(errs);
-        default:
-          return errs;
+          case 'nexx.exceptions.DBExceptions':
+            return self.fromDBExceptions(errs);
+          default:
+            return errs;
         }
       } else if (errs instanceof Error) {
         return systemErrorFunc();
@@ -334,17 +328,17 @@ class ErrorHelper {
     Hoek.assert(code, 'Empty error code');
 
     opts = opts || {};
-    let optionType = typeof (opts);
+    let optionType = typeof(opts);
     switch (optionType) {
-    case 'string':
-      opts = {
-        uiMessage: opts
-      };
-      break;
-    case 'object':
-      break;
-    default:
-      throw new Error('Invalid options data type: ' + optionType);
+      case 'string':
+        opts = {
+          uiMessage: opts
+        };
+        break;
+      case 'object':
+        break;
+      default:
+        throw new Error('Invalid options data type: ' + optionType);
     }
 
     let message = opts.message || this.getMessage(code, opts.params),
@@ -415,15 +409,15 @@ class ErrorHelper {
     var isError = (code) => {
       try {
         var iCode = 0;
-        switch (typeof (code)) {
-        case 'string':
-          iCode = parseInt(code);
-          break;
-        case 'number':
-          iCode = code;
-          break;
-        default:
-          return false;
+        switch (typeof(code)) {
+          case 'string':
+            iCode = parseInt(code);
+            break;
+          case 'number':
+            iCode = code;
+            break;
+          default:
+            return false;
         }
 
         return iCode > 0 && iCode < 999;
@@ -436,12 +430,12 @@ class ErrorHelper {
     };
 
     var code = '-1';
-    if (typeof (exception) === 'string') {
+    if (typeof(exception) === 'string') {
       return isError(exception);
     } else if (Array.isArray(exception)) {
       code = exception[0].code;
       return isError(code);
-    } else if (typeof (exception) === 'object') {
+    } else if (typeof(exception) === 'object') {
       if (exception.errors) {
         code = exception.errors[0].code;
         return isError(code);
@@ -465,14 +459,14 @@ class ErrorHelper {
     Hoek.assert(err, 'Error object must not be empty');
 
     switch (err.code) {
-    case '23505':
-      dest.code = '201';
-      break;
-    case '23502':
-      dest.code = '203';
-      break;
-    default:
-      dest.code = err.code;
+      case '23505':
+        dest.code = '201';
+        break;
+      case '23502':
+        dest.code = '203';
+        break;
+      default:
+        dest.code = err.code;
     }
 
     dest.message = err.detail || err.message || '';
@@ -494,22 +488,22 @@ class ErrorHelper {
     var result = '999';
 
     switch (type) {
-    case 'any.empty':
-    case 'any.required':
-      result = '100';
-      break;
-    case 'string.min':
-      result = '101';
-      break;
-    case 'string.max':
-      result = '102';
-      break;
-    case 'string.alphanum':
-      result = '108';
-      break;
-    case 'geo.coordinates':
-      result = ERROR_CODE.COORDINATES_INVALID;
-      break;
+      case 'any.empty':
+      case 'any.required':
+        result = '100';
+        break;
+      case 'string.min':
+        result = '101';
+        break;
+      case 'string.max':
+        result = '102';
+        break;
+      case 'string.alphanum':
+        result = '108';
+        break;
+      case 'geo.coordinates':
+        result = ERROR_CODE.COORDINATES_INVALID;
+        break;
     }
 
     return result;
@@ -560,7 +554,7 @@ class ErrorHelper {
 
     let self = this;
 
-    if (typeof (inputs) !== 'object') {
+    if (typeof(inputs) !== 'object') {
       Hoek.assert(Array.isArray(inputs), 'Input values must be a objet or array');
     }
 
@@ -577,14 +571,14 @@ class ErrorHelper {
         let input = inputs[i];
 
         if (input.value !== null && input.value !== undefined) {
-          switch (typeof (input.value)) {
-          case 'object':
-            if (Array.isArray(input.value) ? !arrayHelpers.isEmpty(input.value) : !dataHelpers.isEmpty(input.value)) {
+          switch (typeof(input.value)) {
+            case 'object':
+              if (Array.isArray(input.value) ? !arrayHelpers.isEmpty(input.value) : !dataHelpers.isEmpty(input.value)) {
+                continue;
+              }
+              break;
+            default:
               continue;
-            }
-            break;
-          default:
-            continue;
           }
         }
 
