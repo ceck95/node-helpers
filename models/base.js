@@ -1,8 +1,8 @@
 /*
  * @Author: toan.nguyen
  * @Date:   2016-05-23 01:49:13
- * @Last Modified by:   toan.nguyen
- * @Last Modified time: 2016-09-22 09:51:38
+* @Last modified by:   nhutdev
+* @Last modified time: 2017-02-20T10:32:51+07:00
  */
 
 'use strict';
@@ -13,6 +13,7 @@ const moment = require('moment');
 const modelHelpers = require('../helpers/model');
 const dataHelpers = require('../helpers/data');
 const arrayHelpers = require('../helpers/array');
+const constHelpers = require('../helpers/const');
 
 class BaseModel {
 
@@ -67,7 +68,10 @@ class BaseModel {
    * @return {string} Primary key name
    */
   get primaryKeyName() {
-    return 'uid';
+
+    let primaryKeyName = config.get('db.postgres.primaryKeyName');
+    return primaryKeyName || 'uid';
+
   }
 
   /**
@@ -112,9 +116,13 @@ class BaseModel {
   beforeSave(isNewRecord) {
 
     if (this.hasOwnProperty('metadata')) {
-      if (this.metadata && typeof (this.metadata) !== 'string') {
+      if (this.metadata && typeof(this.metadata) !== 'string') {
         this.metadata = JSON.stringify(this.metadata);
       }
+    }
+
+    if (this.hasOwnProperty('status')) {
+      this.status = constHelpers.status.ACTIVE;
     }
 
     if (isNewRecord) {
@@ -165,7 +173,7 @@ class BaseModel {
 
     }
 
-    if (model.metadata !== undefined && typeof (this.metadata) !== 'string') {
+    if (model.metadata !== undefined && typeof(this.metadata) !== 'string') {
       model.metadata = dataHelpers.toDataString(this.metadata);
     }
 
