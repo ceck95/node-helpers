@@ -1,9 +1,12 @@
-/*
- * @Author: toan.nguyen
- * @Date:   2016-05-23 01:49:13
+/**
+ * @Author: Tran Van Nhut <nhutdev>
+ * @Date:   2017-02-20T10:41:51+07:00
+ * @Email:  tranvannhut4495@gmail.com
 * @Last modified by:   nhutdev
-* @Last modified time: 2017-02-20T10:32:51+07:00
+* @Last modified time: 2017-02-20T10:43:09+07:00
  */
+
+
 
 'use strict';
 
@@ -154,6 +157,8 @@ class BaseModel {
    */
   applyThrift(model, opts) {
 
+    opts = opts || {};
+
     modelHelpers.assignCamelCase(model, this, opts);
 
     if (model.createdAt) {
@@ -230,7 +235,7 @@ class BaseModel {
    */
   responseObject(opts) {
 
-    var response = modelHelpers.toObject(this, opts);
+    let response = modelHelpers.toObject(this, opts);
 
     return response;
   }
