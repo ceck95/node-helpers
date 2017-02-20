@@ -3,7 +3,7 @@
  * @Date:   2017-02-20T10:41:51+07:00
  * @Email:  tranvannhut4495@gmail.com
 * @Last modified by:   nhutdev
-* @Last modified time: 2017-02-20T10:43:09+07:00
+* @Last modified time: 2017-02-20T15:29:10+07:00
  */
 
 
@@ -72,7 +72,7 @@ class BaseModel {
    */
   get primaryKeyName() {
 
-    let primaryKeyName = config.get('db.postgres.primaryKeyName');
+    let primaryKeyName = config.get('db.postgres.default.primaryKeyName');
     return primaryKeyName || 'uid';
 
   }
@@ -107,6 +107,11 @@ class BaseModel {
   constructor(data, opts) {
 
     opts = opts || {};
+    this.createdAt = '';
+    this.updatedAt = '';
+    this.createdBy = '';
+    this.updatedBy = '';
+    this.status = null;
 
     if (!arrayHelpers.isEmpty(opts.includes) && !opts.prefix) {
       opts.prefix = this.tableAlias;
