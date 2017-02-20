@@ -3,7 +3,7 @@
  * @Date:   2017-02-20T10:41:51+07:00
  * @Email:  tranvannhut4495@gmail.com
 * @Last modified by:   nhutdev
-* @Last modified time: 2017-02-20T15:29:10+07:00
+* @Last modified time: 2017-02-20T15:55:20+07:00
  */
 
 
@@ -16,7 +16,7 @@ const moment = require('moment');
 const modelHelpers = require('../helpers/model');
 const dataHelpers = require('../helpers/data');
 const arrayHelpers = require('../helpers/array');
-const constHelpers = require('../helpers/const');
+const constHelpers = new(require('../helpers/const'))();
 
 class BaseModel {
 
