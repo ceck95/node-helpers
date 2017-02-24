@@ -1,8 +1,8 @@
 /*
  * @Author: toan.nguyen
  * @Date:   2016-07-26 10:17:40
- * @Last Modified by:   toan.nguyen
- * @Last Modified time: 2016-08-02 12:01:36
+* @Last modified by:   nhutdev
+* @Last modified time: 2017-02-24T16:47:29+07:00
  */
 
 'use strict';
