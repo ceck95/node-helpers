@@ -3,7 +3,7 @@
  * @Date:   2017-02-25T10:46:13+07:00
  * @Email:  tranvannhut4495@gmail.com
 * @Last modified by:   nhutdev
-* @Last modified time: 2017-02-25T10:49:37+07:00
+* @Last modified time: 2017-02-25T10:53:39+07:00
  */
 
 
@@ -77,6 +77,7 @@ internals.implementation = (server, options) => {
           if (parts[0].toLowerCase() === e.toLowerCase()) {
             checkFailTokenType = false;
             tokenTypeCurrent = e;
+            settings.tokenTypeCurrent = e;
             break;
           }
 
