@@ -1,8 +1,8 @@
 /*
  * @Author: toan.nguyen
  * @Date:   2016-04-27 04:47:17
- * @Last Modified by:   toan.nguyen
- * @Last Modified time: 2016-08-09 09:29:02
+* @Last modified by:   nhutdev
+* @Last modified time: 2017-02-25T11:32:53+07:00
  */
 
 'use strict';
@@ -19,6 +19,7 @@ let schema = {
   authHeaders: authHeaderSchemas.auth,
   basicHeaders: authHeaderSchemas.basic,
   tokenHeaders: authHeaderSchemas.token,
+  mergeHeaders: authHeaderSchemas.merge,
   accessToken: accessTokenSchemas.response,
 
   request: {

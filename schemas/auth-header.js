@@ -1,9 +1,12 @@
-/*
- * @Author: toan.nguyen
- * @Date:   2016-08-08 22:46:11
- * @Last Modified by:   toan.nguyen
- * @Last Modified time: 2016-10-11 17:59:30
+/**
+ * @Author: Tran Van Nhut <nhutdev>
+ * @Date:   2017-02-25T11:31:00+07:00
+ * @Email:  tranvannhut4495@gmail.com
+* @Last modified by:   nhutdev
+* @Last modified time: 2017-02-25T11:31:07+07:00
  */
+
+
 
 'use strict';
 
@@ -25,10 +28,14 @@ let authHeaders = Joi.object({
   }).keys(headerDevice).unknown(),
   tokenHeaders = Joi.object({
     authorization: Joi.string().required().description('Format: Bearer $token'),
+  }).keys(headerDevice).unknown(),
+  mergeTokenBasicHeaders = Joi.object().keys({
+    authorization: Joi.string().required().description('Format: Basic base64($client_id:$client_secret) or Format: Bearer $token'),
   }).keys(headerDevice).unknown();
 
 module.exports = {
   auth: authHeaders,
   basic: basicHeaders,
-  token: tokenHeaders
+  token: tokenHeaders,
+  merge: mergeTokenBasicHeaders
 };
