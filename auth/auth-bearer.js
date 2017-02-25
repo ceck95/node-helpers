@@ -1,9 +1,12 @@
-/*
- * @Author: toan.nguyen
- * @Date:   2016-09-07 10:26:57
- * @Last Modified by:   toan.nguyen
- * @Last Modified time: 2016-10-02 16:53:05
+/**
+ * @Author: Tran Van Nhut <nhutdev>
+ * @Date:   2017-02-25T10:46:13+07:00
+ * @Email:  tranvannhut4495@gmail.com
+* @Last modified by:   nhutdev
+* @Last modified time: 2017-02-25T10:49:37+07:00
  */
+
+
 
 'use strict';
 
@@ -11,7 +14,7 @@ const Boom = require('boom');
 const Hoek = require('hoek');
 
 const internals = {
-  schemeName: 'nexx-bearer-token'
+  schemeName: 'node-bearer-token'
 };
 
 /**
@@ -30,7 +33,7 @@ internals.implementation = (server, options) => {
   options.accessTokenName = options.accessTokenName || 'accessToken';
   options.allowQueryToken = options.allowQueryToken === false ? false : true;
   options.allowMultipleHeaders = options.allowMultipleHeaders === true ? true : false;
-  options.tokenType = options.tokenType || 'Bearer';
+  options.tokenType = options.tokenType || ['Basic', 'Bearer'];
 
   const settings = Hoek.clone(options);
 
@@ -60,8 +63,37 @@ internals.implementation = (server, options) => {
 
       const parts = authorization.split(/\s+/);
 
-      if (parts[0].toLowerCase() !== options.tokenType.toLowerCase()) {
-        return reply(Boom.unauthorized(null, options.tokenType));
+      if (typeof(options.tokenType) === 'object') {
+
+        let checkFailTokenType = false;
+        let tokenTypeCurrent = null;
+
+        for (let e of options.tokenType) {
+
+          if (parts[0].toLowerCase() !== e.toLowerCase()) {
+            checkFailTokenType = true;
+          }
+
+          if (parts[0].toLowerCase() === e.toLowerCase()) {
+            checkFailTokenType = false;
+            tokenTypeCurrent = e;
+            break;
+          }
+
+        }
+
+        if (checkFailTokenType) {
+          return reply(Boom.unauthorized(null, tokenTypeCurrent));
+        }
+
+        settings.headerRegExp = new RegExp(tokenTypeCurrent + '\\s+([^;$]+)', 'i');
+
+      } else {
+
+        if (parts[0].toLowerCase() !== options.tokenType.toLowerCase()) {
+          return reply(Boom.unauthorized(null, options.tokenType));
+        }
+
       }
 
       const token = parts[1];
@@ -69,18 +101,34 @@ internals.implementation = (server, options) => {
       return settings.validateFunc.call(request, token, settings, (err, isValid, credentials, artifacts) => {
 
         if (err) {
-          return reply(err, { credentials, log: { tags: ['auth', 'bearer'], data: err } });
+          return reply(err, {
+            credentials,
+            log: {
+              tags: ['auth', 'bearer'],
+              data: err
+            }
+          });
         }
 
         if (!isValid) {
-          return reply(Boom.unauthorized('Bad token', options.tokenType, { credentials, artifacts }));
+          return reply(Boom.unauthorized('Bad token', options.tokenType, {
+            credentials,
+            artifacts
+          }));
         }
 
         if (!credentials || typeof credentials !== 'object') {
-          return reply(Boom.badImplementation('Bad token string received for Bearer auth validation'), { log: { tags: 'token' } });
+          return reply(Boom.badImplementation('Bad token string received for Bearer auth validation'), {
+            log: {
+              tags: 'token'
+            }
+          });
         }
 
-        return reply.continue({ credentials, artifacts });
+        return reply.continue({
+          credentials,
+          artifacts
+        });
       });
     }
   };
@@ -111,7 +159,7 @@ const authBearerScheme = {
 };
 
 authBearerScheme.register.attributes = {
-  name: 'nexx-oauth-bearer',
+  name: 'node-oauth-bearer',
   version: '0.1.0'
 };
 
