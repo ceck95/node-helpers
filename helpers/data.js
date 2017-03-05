@@ -1,8 +1,8 @@
 /*
  * @Author: toan.nguyen
  * @Date:   2016-04-30 13:40:00
- * @Last Modified by:   toan.nguyen
- * @Last Modified time: 2016-10-14 17:57:00
+* @Last modified by:   nhutdev
+* @Last modified time: 2017-03-05T11:58:57+07:00
  */
 
 'use strict';
@@ -312,11 +312,11 @@ class DataHelper {
       return defaultValue;
     }
 
-    switch (typeof (input)) {
-    case 'number':
-      return input;
-    default:
-      return parseInt(input);
+    switch (typeof(input)) {
+      case 'number':
+        return input;
+      default:
+        return parseInt(input);
     }
   }
 
@@ -357,21 +357,21 @@ class DataHelper {
     }
 
     try {
-      switch (typeof (input)) {
-      case 'string':
-        var date = new Date(input);
-        return date.getTime();
-      case 'number':
-        return input;
-      case 'object':
-        // if current object is Date object
-        if (typeof input.getMonth === 'function') {
-          return input.getTime();
-        }
+      switch (typeof(input)) {
+        case 'string':
+          var date = new Date(input);
+          return date.getTime();
+        case 'number':
+          return input;
+        case 'object':
+          // if current object is Date object
+          if (typeof input.getMonth === 'function') {
+            return input.getTime();
+          }
 
-        return 0;
-      default:
-        return 0;
+          return 0;
+        default:
+          return 0;
       }
     } catch (e) {
       // statements
@@ -397,27 +397,27 @@ class DataHelper {
     }
 
 
-    switch (typeof (input)) {
-    case 'string':
-      return input;
-    case 'number':
-      return input.toString();
-    case 'object':
-      // if current object is Date object
-      if (typeof input.getMonth === 'function') {
-        return DataHelper.toDateString(input, 'isoDateTime', defaultValue);
-      }
+    switch (typeof(input)) {
+      case 'string':
+        return input;
+      case 'number':
+        return input.toString();
+      case 'object':
+        // if current object is Date object
+        if (typeof input.getMonth === 'function') {
+          return DataHelper.toDateString(input, 'isoDateTime', defaultValue);
+        }
 
-      try {
-        return JSON.stringify(input);
-      } catch (e) {
-        // statements
-        console.error('Cannot stringify input object to json string:', input);
+        try {
+          return JSON.stringify(input);
+        } catch (e) {
+          // statements
+          console.error('Cannot stringify input object to json string:', input);
+          return '';
+        }
+        break;
+      default:
         return '';
-      }
-      break;
-    default:
-      return '';
     }
   }
 
@@ -434,7 +434,7 @@ class DataHelper {
     Hoek.assert(Array.isArray(array1), 'Array 1 is not array type');
     Hoek.assert(Array.isArray(array2), 'Array 2 is not array type');
 
-    return (array1.length == array2.length) && array1.every(function (element, index) {
+    return (array1.length == array2.length) && array1.every(function(element, index) {
       return element === array2[index];
     });
   }
@@ -451,7 +451,7 @@ class DataHelper {
       return false;
     }
 
-    if (typeof (obj) !== 'object') {
+    if (typeof(obj) !== 'object') {
       return false;
     }
     return typeof obj.getMonth === 'function';
@@ -467,6 +467,12 @@ class DataHelper {
   static isNumeric(n) {
     return !isNaN(parseFloat(n)) && isFinite(n);
   }
+
+  static stringToArray(string) {
+    let array = JSON.parse(`[${string}]`);
+    return array;
+  }
+
 }
 
 module.exports = DataHelper;
