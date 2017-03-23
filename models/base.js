@@ -2,8 +2,8 @@
  * @Author: Tran Van Nhut <nhutdev>
  * @Date:   2017-02-20T10:41:51+07:00
  * @Email:  tranvannhut4495@gmail.com
-* @Last modified by:   nhutdev
-* @Last modified time: 2017-02-20T15:55:20+07:00
+ * @Last modified by:   nhutdev
+ * @Last modified time: 2017-03-23T22:54:24+07:00
  */
 
 
@@ -129,9 +129,9 @@ class BaseModel {
       }
     }
 
-    if (this.hasOwnProperty('status')) {
-      this.status = constHelpers.status.ACTIVE;
-    }
+    // if (this.hasOwnProperty('status')) {
+    //   this.status = constHelpers.status.ACTIVE;
+    // }
 
     if (isNewRecord) {
       if (this.hasOwnProperty('createdAt')) {
